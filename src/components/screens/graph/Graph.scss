@@ -1,0 +1,22 @@
+.graph_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem;
+    &__button_box {
+        width: 50%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 2rem;
+        button {
+            background-color: #34acfe;
+            color: white;
+            border: 0;
+            border-radius: 5px;
+            padding: 0.4rem;
+            cursor: pointer;
+        }
+    }
+}
