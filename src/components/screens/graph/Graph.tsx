@@ -114,8 +114,8 @@ const Graph = () => {
     };
 
     return (
-        <div className="graph_container">
-            <div className="graph_container__button_box">
+        <div className="graph-container">
+            <div className="graph-container__button-box">
                 <button onClick={addRandomData}>Add Random Data</button>
                 <button onClick={removeRandomData}>Remove Random Data</button>
                 <button onClick={allRandomData}>all Random Data</button>

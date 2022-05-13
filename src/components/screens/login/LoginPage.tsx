@@ -5,8 +5,6 @@ import Input from "../../common/Input";
 import "./LoginPage.scss";
 import CheckBox from "../../common/CheckBox";
 import validation from "../../common/Validation";
-const emailRegx = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-const passwordRegx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
 
 const LoginPage = () => {
     const navigate = useNavigate();

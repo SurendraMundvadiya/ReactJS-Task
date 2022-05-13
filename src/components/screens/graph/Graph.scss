@@ -1,10 +1,10 @@
-.graph_container {
+.graph-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 1rem;
-    &__button_box {
+    &__button-box {
         width: 50%;
         display: flex;
         justify-content: space-around;
