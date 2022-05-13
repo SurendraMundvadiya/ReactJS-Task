@@ -1,4 +1,4 @@
-.check-box{
+.check-box {
     &__conatiner {
         display: flex;
         justify-content: center;
@@ -9,4 +9,8 @@
         color: red;
         font-size: 0.6rem;
     }
+}
+input[type="checkbox"] {
+    height: 0.8rem;
+    width: 0.8rem;
 }
