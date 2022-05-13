@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import login from "../../assets/login.png";
 import { useNavigate } from "react-router-dom";
+import Input from "../../common/Input";
 import "./LoginPage.scss";
+import CheckBox from "../../common/CheckBox";
+import validation from "../../common/Validation";
 const emailRegx = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 const passwordRegx = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
 
@@ -12,30 +15,13 @@ const LoginPage = () => {
     const [confirmPassword, setConfirmPassword] = useState({ value: "", error: false, errorMessage: "" });
     const [fullName, setFullName] = useState({ value: "", error: false, errorMessage: "" });
     const [phoneNumber, setPhoneNumber] = useState({ value: "", error: false, errorMessage: "" });
-    const [isAgree, setIsAgree] = useState({ value: false, error: false, errorMessage: "" });
+    const [isAgree, setIsAgree] = useState<Boolean | null>();
 
     const handleCrateAccount = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
-        if (email.value === "") {
-            setEmail({ ...email, error: true, errorMessage: "Email is required" });
-        } else if (!emailRegx.test(email.value)) {
-            setEmail({ ...email, error: true, errorMessage: "Email is not valid" });
-        } else if (password.value === "") {
-            setPassword({ ...password, error: true, errorMessage: "Password is required" });
-        } else if (!passwordRegx.test(password.value)) {
-            setPassword({ ...password, error: true, errorMessage: "Password is not valid" });
-        } else if (confirmPassword.value === "") {
-            setConfirmPassword({ ...confirmPassword, error: true, errorMessage: "Confirm password is required" });
-        } else if (password.value !== confirmPassword.value) {
-            setConfirmPassword({ ...confirmPassword, error: true, errorMessage: "Confirm password is not valid" });
-        } else if (fullName.value === "") {
-            setFullName({ ...fullName, error: true, errorMessage: "Full name is required" });
-        } else if (phoneNumber.value === "") {
-            setPhoneNumber({ ...phoneNumber, error: true, errorMessage: "Phone number is required" });
-        } else if (!isAgree.value) {
-            setIsAgree({ ...isAgree, error: true, errorMessage: "You must agree with our terms and conditions" });
+        if (email.error || password.error || confirmPassword.error || fullName.error || phoneNumber.error || !isAgree) {
+            return;
         } else {
-            console.log("success");
             navigate("/graph");
         }
     };
@@ -47,79 +33,80 @@ const LoginPage = () => {
             </div>
             <form className="container__form">
                 <h3>Create an account</h3>
-                <label className="container__form__labelText">Your email address</label>
-                <input
-                    type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (emailRegx.test(e.target.value)) {
-                            setEmail({ value: e.target.value, error: false, errorMessage: "" });
-                        } else {
-                            setEmail({ value: e.target.value, error: true, errorMessage: "Please enter a valid email address" });
-                        }
+
+                <Input
+                    label="Your email address"
+                    type="email"
+                    name="email"
+                    onChange={async (e) => {
+                        let temp = await validation("email", e.target.value);
+                        if (temp.error) setEmail({ value: e.target.value, error: temp.error, errorMessage: temp.errorMessage });
+                        else setEmail({ value: e.target.value, error: false, errorMessage: "" });
                     }}
+                    error={email.error}
+                    helperText={email.errorMessage}
                 />
-                {email.error && <span className="container__form__error">{email.errorMessage}</span>}
-                <label className="container__form__labelText">Your password</label>
-                <input
+
+                <Input
+                    label="Your password"
                     type="password"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (passwordRegx.test(e.target.value)) {
-                            setPassword({ value: e.target.value, error: false, errorMessage: "" });
-                        } else {
-                            setPassword({ value: e.target.value, error: true, errorMessage: "Please enter a valid 8 digit password" });
-                        }
-                        if (e.target.value !== confirmPassword.value) {
-                            setConfirmPassword({ value: e.target.value, error: true, errorMessage: "Password does not match" });
-                        }
+                    name="password"
+                    onChange={async (e) => {
+                        let temp = await validation("password", e.target.value);
+                        if (temp.error) setPassword({ value: e.target.value, error: temp.error, errorMessage: temp.errorMessage });
+                        else setPassword({ value: e.target.value, error: false, errorMessage: "" });
                     }}
+                    error={password.error}
+                    helperText={password.errorMessage}
                 />
-                {password.error && <span className="container__form__error">{password.errorMessage}</span>}
-                <label className="container__form__labelText">Confirm your password</label>
-                <input
+
+                <Input
+                    label="Confirm your password"
                     type="password"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    name="confirmPassword"
+                    onChange={(e) => {
                         if (e.target.value === password.value) {
                             setConfirmPassword({ value: e.target.value, error: false, errorMessage: "" });
                         } else {
                             setConfirmPassword({ value: e.target.value, error: true, errorMessage: "Password does not match" });
                         }
                     }}
+                    error={confirmPassword.error}
+                    helperText={confirmPassword.errorMessage}
                 />
-                {confirmPassword.error && <span className="container__form__error">{confirmPassword.errorMessage}</span>}
-                <label className="container__form__labelText">Your full name</label>
-                <input
+
+                <Input
+                    label="Your full name"
                     type="text"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (e.target.value.length > 3) {
-                            setFullName({ value: e.target.value, error: false, errorMessage: "" });
-                        } else {
-                            setFullName({ value: e.target.value, error: true, errorMessage: "Please enter your full name" });
-                        }
+                    name="fullName"
+                    onChange={async (e) => {
+                        let temp = await validation("fullName", e.target.value);
+                        if (temp.error) setFullName({ value: e.target.value, error: temp.error, errorMessage: temp.errorMessage });
+                        else setFullName({ value: e.target.value, error: false, errorMessage: "" });
                     }}
+                    error={fullName.error}
+                    helperText={fullName.errorMessage}
                 />
-                {fullName.error && <span className="container__form__error">{fullName.errorMessage}</span>}
-                <label className="container__form__labelText">Your phone number</label>
-                <input
+
+                <Input
+                    label="Your phone number"
                     type="number"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (e.target.value.length === 10) {
-                            setPhoneNumber({ value: e.target.value, error: false, errorMessage: "" });
-                        } else {
-                            setPhoneNumber({ value: e.target.value, error: true, errorMessage: "Please enter your 10 digit phone number" });
-                        }
+                    name="phoneNumber"
+                    onChange={async (e) => {
+                        let temp = await validation("phoneNumber", e.target.value);
+                        if (temp.error) setPhoneNumber({ value: e.target.value, error: temp.error, errorMessage: temp.errorMessage });
+                        else setPhoneNumber({ value: e.target.value, error: false, errorMessage: "" });
                     }}
+                    error={phoneNumber.error}
+                    helperText={phoneNumber.errorMessage}
                 />
-                {phoneNumber.error && <span className="container__form__error">{phoneNumber.errorMessage}</span>}
-                <span className="container__form__labelText">
-                    <input
-                        type="checkbox"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            setIsAgree({ value: e.target.checked, error: false, errorMessage: "" });
-                        }}
-                    />
-                    I read and and agree Terms and Conditions
-                </span>
-                {isAgree.error && <span className="container__form__error">You must agree to the terms and conditions</span>}
+                <CheckBox
+                    onChange={(e) => {
+                        console.log(e.target.checked);
+                        setIsAgree(e.target.checked);
+                    }}
+                    error={!isAgree}
+                />
 
                 <button onClick={(e) => handleCrateAccount(e)}>Create account</button>
             </form>

@@ -26,10 +26,7 @@ $color: #bfc5cf;
             margin-bottom: 0.1rem;
             font-size: 0.8rem;
         }
-        &__error {
-            color: red;
-            font-size: 0.6rem;
-        }
+
         label {
             color: $color;
         }
@@ -43,25 +40,6 @@ $color: #bfc5cf;
             border-radius: 5px;
             cursor: pointer;
             background-color: #34acfe;
-        }
-        input {
-            border: 2px solid $color;
-            border-radius: 4px;
-            padding: 0.3rem;
-        }
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* Firefox */
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-        input[type="checkbox"] {
-            height: 0.8rem;
-            width: 0.8rem;
         }
     }
 }
