@@ -53,6 +53,13 @@ const LoginPage = () => {
                         let temp = await validation("password", e.target.value);
                         if (temp.error) setPassword({ value: e.target.value, error: temp.error, errorMessage: temp.errorMessage });
                         else setPassword({ value: e.target.value, error: false, errorMessage: "" });
+                        if (e.target.value !== confirmPassword.value) {
+                            setConfirmPassword({
+                                value: e.target.value,
+                                error: true,
+                                errorMessage: "Password not match",
+                            });
+                        }
                     }}
                     error={password.error}
                     helperText={password.errorMessage}
